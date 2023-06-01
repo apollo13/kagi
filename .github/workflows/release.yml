@@ -1,53 +1,66 @@
-name: Release
+---
+name: Build & maybe upload PyPI package
 
 on:
   push:
+    branches: [main]
     tags: ["*"]
+  pull_request:
+    branches: [main]
+  release:
+    types:
+      - published
+  workflow_dispatch:
 
 jobs:
-  ci:
-    uses: ./.github/workflows/ci.yml
-
-  package:
-    name: Packages
+  # Always build & lint package.
+  build-package:
+    name: Build & verify package
     runs-on: ubuntu-latest
     permissions:
       contents: read
 
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Python
-        uses: actions/setup-python@v4
         with:
-          python-version: "3.8"
-      - name: Install pypa/build
-        run: >-
-          python3 -m
-          pip install
-          build
-          --user
-      - name: Build a binary wheel and a source tarball
-        run: >-
-          python3 -m
-          build
-          --sdist
-          --wheel
-          --outdir dist/
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Packages
-          path: dist
+          fetch-depth: 0
 
-  deploy:
-    name: Deploy
-    environment: Deployment
-    needs: [ci, package]
+      - uses: hynek/build-and-inspect-python-package@v1
+
+  # Upload to Test PyPI on every commit on main.
+  release-test-pypi:
+    name: Publish in-dev package to test.pypi.org
+    environment: release-test-pypi
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    needs: build-package
     permissions:
       id-token: write
 
     steps:
-      - name: Download packages built
+      - name: Download packages built by build-and-inspect-python-package
+        uses: actions/download-artifact@v3
+        with:
+          name: Packages
+          path: dist
+
+      - name: Upload package to Test PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  # Upload to real PyPI on GitHub Releases.
+  release-pypi:
+    name: Publish released package to pypi.org
+    environment: release-pypi
+    if: github.event.action == 'published'
+    runs-on: ubuntu-latest
+    needs: build-package
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download packages built by build-and-inspect-python-package
         uses: actions/download-artifact@v3
         with:
           name: Packages
@@ -55,5 +68,3 @@ jobs:
 
       - name: Upload package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
