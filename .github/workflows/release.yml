@@ -37,7 +37,7 @@ jobs:
   deploy:
     name: Deploy
     environment: Deployment
-    needs: [test, package]
+    needs: [ci, package]
     runs-on: ubuntu-latest
     permissions:
       id-token: write
