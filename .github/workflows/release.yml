@@ -33,6 +33,10 @@ jobs:
           --sdist
           --wheel
           --outdir dist/
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Packages
+          path: dist
 
   deploy:
     name: Deploy
