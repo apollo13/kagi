@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kagi"
-version = "0.3.0"
+version = "0.0.0" # Set automatically on releases
 description = "Django app for WebAuthn and TOTP-based multi-factor authentication"
 authors = ["Justin Mayer <entroP@gmail.com>", "Rémy Hubscher <hubscher.remy@gmail.com>"]
 license = "BSD-2-Clause"
@@ -58,6 +58,9 @@ pytest-xdist = "^2.1"
 sphinx = "^4.0"
 Werkzeug = "^2.0"
 
+[tool.poetry-dynamic-versioning]
+enable = true
+
 [tool.autopub]
 project-name = "Kagi"
 git-username = "botpub"
@@ -81,8 +84,8 @@ sections = "FUTURE,STDLIB,DJANGO,THIRDPARTY,KAGI,FIRSTPARTY,LOCALFOLDER"
 skip_glob = "**/migrations/**,**/node_modules/**,kagi/static/**,static,*.json,*.json"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.pytest.ini_options]
 filterwarnings = ['ignore::DeprecationWarning:invoke.loader', 'ignore::DeprecationWarning:invoke.tasks']
