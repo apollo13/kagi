@@ -100,3 +100,6 @@ DJANGO_SETTINGS_MODULE = 'testproj.settings'
 [tool.flake8]
 ignore = ['E203', 'E501', 'W503']
 max-line-length = 88
+
+[tool.check-wheel-contents]
+ignore = ['W004']
