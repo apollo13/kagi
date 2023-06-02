@@ -54,6 +54,7 @@ Werkzeug = "^2.0"
 
 [tool.autopub]
 project-name = "Kagi"
+build-system = "poetry"
 git-username = "botpub"
 git-email = "botpub@autopub.rocks"
 append-github-contributor = true
