@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+0.4.0 - 2023-06-02
+------------------
+
+* Update project for Django 4.1 compatibility
+* Upgrade code for Python 3.7+ conventions
+
 0.3.0 - 2022-09-18
 ------------------
 
