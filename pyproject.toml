@@ -20,12 +20,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Topic :: Security",
     "Topic :: Security :: Cryptography",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -58,14 +52,6 @@ pytest-xdist = "^2.1"
 sphinx = "^4.0"
 Werkzeug = "^2.0"
 
-[tool.poetry-dynamic-versioning]
-enable = true
-pattern = """\
-(?x)                                                             (?# ignore whitespace) \
-    ^((?P<epoch>\\d+)!)?(?P<base>\\d+(\\.\\d+)*)                 (?# 1.2.3 or 1!2000.1.2) \
-    ([-._]?((?P<stage>[a-zA-Z]+)[-._]?(?P<revision>\\d+)?))?     (?# b0) \
-  """
-
 [tool.autopub]
 project-name = "Kagi"
 git-username = "botpub"
@@ -89,8 +75,8 @@ sections = "FUTURE,STDLIB,DJANGO,THIRDPARTY,KAGI,FIRSTPARTY,LOCALFOLDER"
 skip_glob = "**/migrations/**,**/node_modules/**,kagi/static/**,static,*.json,*.json"
 
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
-build-backend = "poetry_dynamic_versioning.backend"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 filterwarnings = ['ignore::DeprecationWarning:invoke.loader', 'ignore::DeprecationWarning:invoke.tasks']
